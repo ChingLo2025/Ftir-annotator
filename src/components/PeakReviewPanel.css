@@ -1,0 +1,341 @@
+.peak-review-panel {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.panel-header h3 {
+  margin: 0;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #333;
+}
+
+.review-count {
+  font-size: 0.9em;
+  color: #666;
+  font-weight: 500;
+}
+
+.peaks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.no-peaks {
+  padding: 40px 20px;
+  text-align: center;
+  color: #999;
+  background: #fff;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+}
+
+/* ==================== Peak Card ==================== */
+.peak-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.peak-card.annotated {
+  border-color: #4CAF50;
+  background: #f1f8f4;
+}
+
+.peak-card.skipped {
+  border-color: #f44336;
+  background: #fdf2f0;
+}
+
+.peak-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Peak Header */
+.peak-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+
+.peak-header:hover {
+  background: #f5f5f5;
+}
+
+.peak-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.peak-number {
+  font-weight: 700;
+  color: #2196F3;
+  min-width: 40px;
+}
+
+.peak-position {
+  font-weight: 600;
+  color: #333;
+  min-width: 100px;
+}
+
+.peak-intensity {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.peak-status {
+  margin: 0 12px;
+  flex-grow: 1;
+  text-align: right;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+.status-badge.annotated {
+  background: #c8e6c9;
+  color: #2e7d32;
+}
+
+.status-badge.skipped {
+  background: #ffcdd2;
+  color: #c62828;
+}
+
+.expand-button {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #666;
+  cursor: pointer;
+  padding: 8px;
+  transition: transform 0.2s;
+}
+
+.expand-button.expanded {
+  transform: rotate(180deg);
+}
+
+/* Peak Content (Expanded) */
+.peak-content {
+  padding: 0 14px 14px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Candidates List */
+.candidates-list {
+  margin-top: 12px;
+}
+
+.candidates-title {
+  margin: 0 0 10px 0;
+  font-weight: 600;
+  font-size: 0.95em;
+  color: #333;
+}
+
+.candidate-item {
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 8px;
+  transition: all 0.2s;
+}
+
+.candidate-item.selected {
+  background: #e8f5e9;
+  border-color: #4CAF50;
+}
+
+.candidate-item:hover {
+  border-color: #2196F3;
+}
+
+.candidate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.candidate-rank {
+  font-weight: 600;
+  color: #999;
+  font-size: 0.85em;
+}
+
+.candidate-mode {
+  font-weight: 600;
+  color: #333;
+  flex-grow: 1;
+  margin-left: 8px;
+}
+
+.candidate-confidence {
+  background: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.9em;
+  color: #2196F3;
+  border: 1px solid #2196F3;
+  min-width: 50px;
+  text-align: right;
+}
+
+.candidate-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.source {
+  font-size: 0.85em;
+  color: #666;
+}
+
+.notes {
+  font-size: 0.85em;
+  color: #999;
+  font-style: italic;
+}
+
+.select-button {
+  width: 100%;
+  padding: 6px 10px;
+  background: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.select-button:hover {
+  background: #1976D2;
+}
+
+.candidate-item.selected .select-button {
+  background: #4CAF50;
+}
+
+.candidate-item.selected .select-button:hover {
+  background: #45a049;
+}
+
+.no-candidates {
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+  color: #999;
+  font-size: 0.9em;
+}
+
+/* Peak Actions */
+.peak-actions {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.skip-button {
+  width: 100%;
+  padding: 8px 10px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.skip-button:hover {
+  background: #d32f2f;
+}
+
+/* Review Summary */
+.review-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.summary-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+}
+
+.summary-stat .label {
+  font-size: 0.9em;
+  color: #666;
+  font-weight: 500;
+}
+
+.summary-stat .value {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #2196F3;
+}
+
+@media (max-width: 768px) {
+  .peak-header {
+    padding: 12px;
+  }
+
+  .peak-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .peak-position,
+  .peak-intensity {
+    min-width: auto;
+  }
+
+  .review-summary {
+    grid-template-columns: 1fr;
+  }
+}

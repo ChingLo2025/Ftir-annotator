@@ -1,0 +1,136 @@
+/**
+ * ExportPanel.css
+ * 
+ * Styling for export panel
+ * - Download buttons (PNG and CSV)
+ * - Status and info messages
+ * - Responsive layout
+ */
+
+.export-panel {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border: 1px solid #e0e7ff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.export-panel h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.export-panel p {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.export-desc {
+  background: white;
+  border-left: 4px solid #1976d2;
+  padding: 10px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.export-disabled {
+  background: #f5f5f5;
+  padding: 12px 16px;
+  border-radius: 6px;
+  color: #999;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Export Buttons Container */
+.export-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 0;
+  flex-wrap: wrap;
+}
+
+/* Individual Buttons */
+.export-btn {
+  flex: 1;
+  min-width: 180px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.export-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.export-btn:active {
+  transform: translateY(-1px);
+}
+
+.export-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* PNG Download Button */
+.export-btn.png-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.export-btn.png-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5568d3 0%, #69428f 100%);
+}
+
+/* CSV Download Button */
+.export-btn.csv-btn {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.export-btn.csv-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e680e9 0%, #f04453 100%);
+}
+
+/* Icon styling */
+.export-btn::before {
+  content: attr(data-icon);
+  font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .export-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .export-btn {
+    min-width: 100%;
+    padding: 14px 12px;
+  }
+
+  .export-panel h3 {
+    font-size: 16px;
+  }
+
+  .export-desc,
+  .export-disabled {
+    font-size: 13px;
+  }
+}

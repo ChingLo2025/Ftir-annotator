@@ -1,0 +1,144 @@
+.peak-annotation-table-wrapper {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.peak-annotation-table-wrapper h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #333;
+}
+
+.peak-table-placeholder {
+  background: #f9f9f9;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  padding: 40px 20px;
+  text-align: center;
+  color: #999;
+  margin-bottom: 20px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.peak-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.peak-table thead {
+  background: #fff;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.peak-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.peak-table th:hover {
+  background: #f0f0f0;
+}
+
+.peak-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.peak-table tbody tr:hover {
+  background: #f5f8ff;
+}
+
+/* Row status colors */
+.row-annotated {
+  background: #f1f8f4;
+}
+
+.row-skipped {
+  background: #fdf2f0;
+}
+
+/* Cell styling */
+.cell-index {
+  font-weight: 600;
+  color: #2196F3;
+  text-align: center;
+  width: 60px;
+}
+
+.cell-position {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+}
+
+.cell-intensity,
+.cell-fwhm {
+  font-family: 'Courier New', monospace;
+}
+
+.cell-annotation {
+  font-weight: 500;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell-confidence {
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Status tags */
+.status-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.85em;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-tag.annotated {
+  background: #c8e6c9;
+  color: #2e7d32;
+}
+
+.status-tag.skipped {
+  background: #ffcdd2;
+  color: #c62828;
+}
+
+.status-tag.unreviewed {
+  background: #e0e0e0;
+  color: #757575;
+}
+
+@media (max-width: 768px) {
+  .peak-table {
+    font-size: 0.85em;
+  }
+
+  .peak-table th,
+  .peak-table td {
+    padding: 6px 8px;
+  }
+
+  .cell-annotation {
+    max-width: 120px;
+  }
+}

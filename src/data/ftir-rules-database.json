@@ -1,0 +1,1121 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2026-02-18",
+    "sources": [
+      "Silverstein, Webster, Kiemle - Spectrometric Identification of Organic Compounds",
+      "Pavia, Lampman, Kriz - Introduction to Spectroscopy",
+      "UCLA Chemistry - IR Absorption Table",
+      "Chemistry LibreTexts - Infrared Spectroscopy Absorption Table",
+      "Spectroscopy Online - IR Spectral Interpretation Workshop"
+    ],
+    "description": "Vibration-mode-centric FTIR annotation rule database with cross-validation support"
+  },
+  
+  "vibrationModes": {
+    "ohStretching": {
+      "id": "oh-stretch",
+      "name": "O-H Stretching",
+      "category": "stretching",
+      "description": "Vibrational mode: O-H bond elongation and compression",
+      
+      "subTypes": [
+        {
+          "id": "oh-stretch-aliphatic-alcohol",
+          "source": "Aliphatic Alcohol (Primary, Secondary, Tertiary)",
+          "primaryPeak": {
+            "wavenumber": [3200, 3600],
+            "intensity": "medium to strong",
+            "shape": "sharp to medium-broad",
+            "fwhm": [50, 150],
+            "description": "Hydrogen-bonded O-H stretch (most common)"
+          },
+          "alternativeForm": {
+            "wavenumber": [3600, 3700],
+            "intensity": "medium",
+            "shape": "sharp",
+            "fwhm": [20, 40],
+            "description": "Free O-H (non-hydrogen-bonded, rare in neat samples)"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "oh-bend-alcohol",
+              "mode": "O-H Bending (In-plane)",
+              "wavenumber": [1420, 1330],
+              "intensity": "medium",
+              "required": true,
+              "note": "Must be present for confirmation"
+            },
+            {
+              "id": "c-o-stretch-alcohol",
+              "mode": "C-O Stretching",
+              "wavenumber": [1000, 1300],
+              "intensity": "strong",
+              "required": true,
+              "note": "Primary alcohol: 1085-1050; Secondary: 1124-1087; Tertiary: 1205-1124"
+            }
+          ],
+          "excludeWith": ["carboxylic-acid", "phenol"],
+          "confidence": 0.85,
+          "notes": "Sharp, well-defined peak. No C=O at 1680-1750. Position higher than carboxylic acid O-H."
+        },
+        {
+          "id": "oh-stretch-carboxylic-acid",
+          "source": "Carboxylic Acid (COOH)",
+          "primaryPeak": {
+            "wavenumber": [2500, 3300],
+            "intensity": "strong",
+            "shape": "very-broad",
+            "fwhm": [800, 1200],
+            "description": "Extremely broad O-H stretch, often centered around 3000 cm⁻¹, characteristic dull envelope"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "c=o-carboxylic",
+              "mode": "C=O Stretching (Carboxylic Acid)",
+              "wavenumber": [1680, 1720],
+              "intensity": "strong",
+              "required": true,
+              "note": "Monomer: ~1760; Dimer: 1720-1706"
+            },
+            {
+              "id": "oh-bend-carboxylic",
+              "mode": "O-H Bending (In-plane)",
+              "wavenumber": [1440, 1395],
+              "intensity": "medium",
+              "required": true,
+              "note": "Often overlapped with C=O region"
+            }
+          ],
+          "excludeWith": ["aliphatic-alcohol", "phenol"],
+          "confidence": 0.95,
+          "notes": "VERY BROAD peak is diagnostic. Peak position much lower (2500) than alcohols. Must have C=O stretch 1680-1720."
+        },
+        {
+          "id": "oh-stretch-phenol",
+          "source": "Phenol (Aromatic OH)",
+          "primaryPeak": {
+            "wavenumber": [3300, 3500],
+            "intensity": "medium",
+            "shape": "sharp to medium-broad",
+            "fwhm": [40, 100],
+            "description": "O-H attached to aromatic ring, position lower than aliphatic alcohols"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "aromatic-c=c-phenol",
+              "mode": "Aromatic C=C Stretching",
+              "wavenumber": [1400, 1600],
+              "intensity": "medium",
+              "required": true,
+              "note": "Multiple peaks in aromatic region, distinct from aliphatic"
+            },
+            {
+              "id": "oh-bend-phenol",
+              "mode": "O-H Bending (In-plane)",
+              "wavenumber": [1390, 1310],
+              "intensity": "medium",
+              "required": true,
+              "note": "Position in aromatic region"
+            },
+            {
+              "id": "c-o-stretch-phenol",
+              "mode": "C-O Stretching (Aromatic)",
+              "wavenumber": [1210, 1010],
+              "intensity": "strong",
+              "required": false,
+              "note": "Aromatic C-O different from aliphatic"
+            }
+          ],
+          "excludeWith": ["aliphatic-alcohol", "carboxylic-acid"],
+          "confidence": 0.90,
+          "notes": "Position intermediate between alcohol and carboxylic acid. MUST have aromatic C=C peaks. Sharper than carboxylic acid."
+        },
+        {
+          "id": "oh-stretch-inorganic-hydroxide",
+          "source": "Inorganic Hydroxides (Minerals, Metal Oxides)",
+          "primaryPeak": {
+            "wavenumber": [3200, 3500],
+            "intensity": "strong to very strong",
+            "shape": "broad to very-broad",
+            "fwhm": [100, 300],
+            "description": "Metal-coordinated O-H, often very broad due to hydrogen bonding network"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "oh-bend-inorganic",
+              "mode": "O-H Bending (Metal-coordinated)",
+              "wavenumber": [800, 1100],
+              "intensity": "medium to strong",
+              "required": true,
+              "note": "Position varies widely depending on metal coordination"
+            }
+          ],
+          "excludeWith": ["organic-compounds"],
+          "confidence": 0.80,
+          "notes": "Very broad, often multiple overlapping bands. Look for lack of C-H stretches above 2800 cm⁻¹."
+        },
+        {
+          "id": "oh-stretch-water",
+          "source": "Water (H₂O, adsorbed or in hydrates)",
+          "primaryPeak": {
+            "wavenumber": [3200, 3400],
+            "intensity": "variable",
+            "shape": "broad",
+            "fwhm": [100, 200],
+            "description": "Two overlapping O-H stretches from symmetric and asymmetric modes"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "h2o-bend",
+              "mode": "H-O-H Bending",
+              "wavenumber": [1630, 1680],
+              "intensity": "medium",
+              "required": true,
+              "note": "Characteristic peak, distinct from C=O stretch"
+            }
+          ],
+          "excludeWith": ["organic-compounds"],
+          "confidence": 0.75,
+          "notes": "Look for combination with broad H-O-H bend at 1650. Often appears as contaminant."
+        }
+      ]
+    },
+
+    "ohBending": {
+      "id": "oh-bend",
+      "name": "O-H Bending (In-plane)",
+      "category": "bending",
+      "description": "Vibrational mode: O-H bond angle change (in-plane deformation), lower energy than stretching",
+      
+      "subTypes": [
+        {
+          "id": "oh-bend-alcohol",
+          "source": "Aliphatic Alcohol",
+          "primaryPeak": {
+            "wavenumber": [1420, 1330],
+            "intensity": "medium",
+            "shape": "sharp to medium-broad",
+            "fwhm": [30, 80],
+            "description": "In-plane O-H bending, often overlapped with C-O stretching region"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "c-o-stretch-for-bend",
+              "mode": "C-O Stretching (coupled)",
+              "wavenumber": [1000, 1300],
+              "intensity": "strong",
+              "required": true,
+              "note": "Often appears as part of same complex"
+            }
+          ],
+          "excludeWith": ["carboxylic-acid-bend"],
+          "confidence": 0.70,
+          "notes": "Less diagnostic than O-H stretch alone. Must appear with O-H stretch 3200-3600."
+        },
+        {
+          "id": "oh-bend-carboxylic-acid",
+          "source": "Carboxylic Acid (COOH)",
+          "primaryPeak": {
+            "wavenumber": [1440, 1395],
+            "intensity": "medium",
+            "shape": "medium-broad",
+            "fwhm": [50, 100],
+            "description": "In-plane O-H bending of COOH, often obscured by C=O stretching"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "c=o-carboxylic-for-bend",
+              "mode": "C=O Stretching (coupled)",
+              "wavenumber": [1680, 1720],
+              "intensity": "strong",
+              "required": true,
+              "note": "Very strong, dominates region"
+            }
+          ],
+          "excludeWith": ["alcohol-bend"],
+          "confidence": 0.65,
+          "notes": "Often invisible due to overlap with C=O. Better to use C=O stretch and very-broad O-H stretch for identification."
+        },
+        {
+          "id": "oh-bend-phenol",
+          "source": "Phenol (Aromatic OH)",
+          "primaryPeak": {
+            "wavenumber": [1390, 1310],
+            "intensity": "medium",
+            "shape": "sharp to medium-broad",
+            "fwhm": [40, 90],
+            "description": "In-plane O-H bending of aromatic OH"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "aromatic-c=c-for-bend",
+              "mode": "Aromatic C=C Stretching",
+              "wavenumber": [1400, 1600],
+              "intensity": "medium",
+              "required": true,
+              "note": "Multiple peaks characteristic of aromatic systems"
+            }
+          ],
+          "excludeWith": ["alcohol-bend"],
+          "confidence": 0.70,
+          "notes": "Position in aromatic region is diagnostic. Look for aromatic C=C pattern."
+        }
+      ]
+    },
+
+    "chStretching": {
+      "id": "ch-stretch",
+      "name": "C-H Stretching",
+      "category": "stretching",
+      "description": "Vibrational mode: C-H bond elongation and compression, typically 2800-3100 cm⁻¹",
+      
+      "subTypes": [
+        {
+          "id": "ch-stretch-alkane",
+          "source": "Alkane (sp³ C-H): Aliphatic chains, cycloalkanes",
+          "primaryPeak": {
+            "wavenumber": [2950, 2850],
+            "intensity": "strong",
+            "shape": "sharp",
+            "fwhm": [20, 40],
+            "description": "Aliphatic C-H stretch, strong and sharp"
+          },
+          "subPeaks": [
+            {
+              "label": "Asymmetric C-H (CH₃, CH₂)",
+              "wavenumber": [2960, 2950],
+              "intensity": "strong"
+            },
+            {
+              "label": "Symmetric C-H (CH₃, CH₂)",
+              "wavenumber": [2870, 2860],
+              "intensity": "strong"
+            }
+          ],
+          "secondaryPeaks": [
+            {
+              "id": "ch-bend-alkane",
+              "mode": "C-H Bending (methyl/methylene)",
+              "wavenumber": [1450, 1375],
+              "intensity": "medium",
+              "required": false,
+              "note": "CH₃: 1375; CH₂: 1465"
+            }
+          ],
+          "confidence": 0.95,
+          "notes": "Most common C-H stretch. Below 3000 cm⁻¹ is characteristic. Very strong, sharp appearance."
+        },
+        {
+          "id": "ch-stretch-alkene",
+          "source": "Alkene (sp² C-H): C=C-H",
+          "primaryPeak": {
+            "wavenumber": [3100, 3010],
+            "intensity": "medium",
+            "shape": "sharp",
+            "fwhm": [15, 30],
+            "description": "sp² C-H stretch, appears ABOVE 3000 cm⁻¹"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "c=c-stretch",
+              "mode": "C=C Stretching",
+              "wavenumber": [1680, 1620],
+              "intensity": "weak to medium",
+              "required": true,
+              "note": "Often weak, requires careful attention"
+            },
+            {
+              "id": "c=c-bend",
+              "mode": "C=C Out-of-plane Bending",
+              "wavenumber": [600, 1000],
+              "intensity": "medium to strong",
+              "required": true,
+              "note": "Diagnostic pattern for substitution (monosubstituted: 915-905; trans: 980-960; cis: 730-665)"
+            }
+          ],
+          "confidence": 0.90,
+          "notes": "KEY FEATURE: Peak above 3000 cm⁻¹ indicates unsaturation. Always check for C=C stretch."
+        },
+        {
+          "id": "ch-stretch-alkyne",
+          "source": "Alkyne (sp C-H): C≡C-H",
+          "primaryPeak": {
+            "wavenumber": [3300, 3260],
+            "intensity": "strong",
+            "shape": "sharp",
+            "fwhm": [10, 20],
+            "description": "Alkyne C-H stretch, very sharp and distinctive"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "c≡c-stretch",
+              "mode": "C≡C Stretching",
+              "wavenumber": [2260, 2100],
+              "intensity": "variable",
+              "required": true,
+              "note": "Monosubstituted: 2140-2100; Disubstituted: 2260-2190"
+            }
+          ],
+          "confidence": 0.95,
+          "notes": "Terminal alkyne: C-H very sharp near 3300. Internal alkyne: no C-H stretch."
+        },
+        {
+          "id": "ch-stretch-aromatic",
+          "source": "Aromatic (sp² C-H): Benzene and derivatives",
+          "primaryPeak": {
+            "wavenumber": [3030, 3000],
+            "intensity": "weak to medium",
+            "shape": "sharp",
+            "fwhm": [15, 30],
+            "description": "Aromatic C-H stretch, appears above 3000 cm⁻¹, often multiple peaks"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "aromatic-c=c",
+              "mode": "Aromatic C=C Stretching",
+              "wavenumber": [1700, 1400],
+              "intensity": "variable",
+              "required": true,
+              "note": "Multiple peaks: 1600, 1500, 1450 cm⁻¹"
+            },
+            {
+              "id": "aromatic-ch-bend",
+              "mode": "Aromatic C-H Out-of-plane Bending",
+              "wavenumber": [860, 680],
+              "intensity": "strong",
+              "required": true,
+              "note": "Pattern diagnostic of substitution pattern (monosubstituted: 750±20, 700±20; ortho: 755±20, 700±20; meta: 880±20, 780±20; para: 810±20)"
+            }
+          ],
+          "confidence": 0.90,
+          "notes": "Weak peaks above 3000. Look for aromatic C=C multiplets. Out-of-plane bending pattern is diagnostic."
+        },
+        {
+          "id": "ch-stretch-aldehyde",
+          "source": "Aldehyde (CHO)",
+          "primaryPeak": {
+            "wavenumber": [2830, 2695],
+            "intensity": "medium",
+            "shape": "doublet (split peak)",
+            "fwhm": [40, 60],
+            "description": "Characteristic aldehyde C-H stretch, appears as TWO peaks (doublet)"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "c=o-aldehyde",
+              "mode": "C=O Stretching (Aldehyde)",
+              "wavenumber": [1740, 1720],
+              "intensity": "strong",
+              "required": true,
+              "note": "Very strong, characteristic position for aldehyde"
+            }
+          ],
+          "confidence": 0.95,
+          "notes": "DIAGNOSTIC: Doublet in 2830-2695 region is highly characteristic of aldehyde. Must have C=O 1740-1720."
+        }
+      ]
+    },
+
+    "chBending": {
+      "id": "ch-bend",
+      "name": "C-H Bending (In-plane)",
+      "category": "bending",
+      "description": "Vibrational mode: C-H bond angle change (in-plane deformation)",
+      
+      "subTypes": [
+        {
+          "id": "ch-bend-methyl",
+          "source": "Methyl group (CH₃)",
+          "primaryPeak": {
+            "wavenumber": [1375, 1365],
+            "intensity": "medium",
+            "shape": "sharp",
+            "fwhm": [20, 40],
+            "description": "Symmetric C-H bending of methyl group"
+          },
+          "note": "Often called 'umbrella mode' (sym. bend)",
+          "confidence": 0.75,
+          "notes": "Position diagnostic for CH₃. Can distinguish from CH₂ (1465 cm⁻¹). Used for isopropyl (gem-dimethyl: 1370-1365)."
+        },
+        {
+          "id": "ch-bend-methylene",
+          "source": "Methylene group (CH₂)",
+          "primaryPeak": {
+            "wavenumber": [1465, 1450],
+            "intensity": "medium",
+            "shape": "sharp",
+            "fwhm": [20, 40],
+            "description": "Scissoring mode (asym. bend) of methylene group"
+          },
+          "note": "Also called 'scissors mode'",
+          "confidence": 0.75,
+          "notes": "Position diagnostic for CH₂. Sharper and higher than CH₃ bend. Can distinguish from CH₃."
+        },
+        {
+          "id": "ch-bend-aldehyde",
+          "source": "Aldehyde (CHO)",
+          "primaryPeak": {
+            "wavenumber": [1390, 1380],
+            "intensity": "medium",
+            "shape": "sharp",
+            "fwhm": [20, 40],
+            "description": "In-plane C-H bending of aldehyde H"
+          },
+          "note": "Part of aldehyde fingerprint",
+          "confidence": 0.70,
+          "notes": "Usually overlapped with CH₃ region. Use with aldehyde C-H stretch doublet and C=O for confirmation."
+        }
+      ]
+    },
+
+    "coStretching": {
+      "id": "co-stretch",
+      "name": "C=O Stretching",
+      "category": "stretching",
+      "description": "Vibrational mode: C=O bond elongation and compression, strongest IR absorptions, 1630-1780 cm⁻¹",
+      
+      "subTypes": [
+        {
+          "id": "c=o-aldehyde",
+          "source": "Aldehyde (RCHO)",
+          "primaryPeak": {
+            "wavenumber": [1740, 1720],
+            "intensity": "strong",
+            "shape": "sharp",
+            "fwhm": [30, 50],
+            "description": "Aldehyde C=O stretch, characteristic strong sharp peak"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "ch-stretch-aldehyde-for-co",
+              "mode": "Aldehyde C-H Stretching (doublet)",
+              "wavenumber": [2830, 2695],
+              "intensity": "medium",
+              "required": true,
+              "note": "Distinctive doublet"
+            }
+          ],
+          "confidence": 0.95,
+          "notes": "One of strongest absorptions. Combined with aldehyde C-H doublet = very high confidence. Conjugation lowers to 1710-1685."
+        },
+        {
+          "id": "c=o-ketone",
+          "source": "Ketone (RCOR')",
+          "primaryPeak": {
+            "wavenumber": [1725, 1705],
+            "intensity": "strong",
+            "shape": "sharp",
+            "fwhm": [30, 50],
+            "description": "Ketone C=O stretch, aliphatic ketone near 1725 cm⁻¹"
+          },
+          "subCases": [
+            {
+              "label": "Aliphatic ketone (acyclic)",
+              "wavenumber": [1725, 1705],
+              "notes": "Cyclohexanone or cyclopentenone: 1745"
+            },
+            {
+              "label": "Conjugated ketone",
+              "wavenumber": [1685, 1666],
+              "notes": "Extended conjugation lowers frequency"
+            },
+            {
+              "label": "α,β-Unsaturated ketone",
+              "wavenumber": [1685, 1665],
+              "notes": "C=C conjugation"
+            }
+          ],
+          "secondaryPeaks": [
+            {
+              "id": "c-c-stretch-ketone",
+              "mode": "C-C Stretching (α-carbon)",
+              "wavenumber": [1000, 1300],
+              "intensity": "variable",
+              "required": false,
+              "note": "Often obscured"
+            }
+          ],
+          "confidence": 0.90,
+          "notes": "No O-H, N-H stretches. Two carbon groups attached. No aldehyde C-H doublet."
+        },
+        {
+          "id": "c=o-carboxylic-acid",
+          "source": "Carboxylic Acid (RCOOH)",
+          "primaryPeak": {
+            "wavenumber": [1720, 1680],
+            "intensity": "strong",
+            "shape": "sharp to medium-broad",
+            "fwhm": [40, 70],
+            "description": "Carboxylic acid C=O stretch"
+          },
+          "subCases": [
+            {
+              "label": "Carboxylic acid monomer",
+              "wavenumber": [1760],
+              "notes": "Isolated molecule"
+            },
+            {
+              "label": "Carboxylic acid dimer",
+              "wavenumber": [1720, 1706],
+              "notes": "Hydrogen-bonded dimer (most common in neat samples)"
+            },
+            {
+              "label": "Conjugated carboxylic acid",
+              "wavenumber": [1710, 1680],
+              "notes": "Aromatic or α,β-unsaturated"
+            }
+          ],
+          "secondaryPeaks": [
+            {
+              "id": "oh-stretch-carboxylic-for-co",
+              "mode": "O-H Stretching",
+              "wavenumber": [3300, 2500],
+              "intensity": "strong",
+              "shape": "very-broad",
+              "required": true,
+              "note": "VERY BROAD envelope, diagnostic"
+            },
+            {
+              "id": "oh-bend-carboxylic-for-co",
+              "mode": "O-H Bending",
+              "wavenumber": [1440, 1395],
+              "intensity": "medium",
+              "required": true,
+              "note": "Often overlapped"
+            }
+          ],
+          "confidence": 0.98,
+          "notes": "Combination of very-broad O-H stretch + C=O in 1680-1720 = very high confidence carboxylic acid."
+        },
+        {
+          "id": "c=o-ester",
+          "source": "Ester (RCOOR')",
+          "primaryPeak": {
+            "wavenumber": [1750, 1735],
+            "intensity": "strong",
+            "shape": "sharp",
+            "fwhm": [30, 50],
+            "description": "Ester C=O stretch, typically higher than ketone"
+          },
+          "subCases": [
+            {
+              "label": "Aliphatic ester",
+              "wavenumber": [1750, 1735],
+              "notes": "Saturated alkyl ester"
+            },
+            {
+              "label": "α,β-Unsaturated ester",
+              "wavenumber": [1730, 1715],
+              "notes": "Conjugation lowers frequency"
+            },
+            {
+              "label": "Lactone (δ-lactone, 6-membered)",
+              "wavenumber": [1750, 1735],
+              "notes": "Ring strain affects position"
+            },
+            {
+              "label": "Lactone (γ-lactone, 5-membered)",
+              "wavenumber": [1770],
+              "notes": "Higher due to ring strain"
+            },
+            {
+              "label": "Lactone (β-lactone, 4-membered)",
+              "wavenumber": [1760, 1730],
+              "notes": "Even more strained"
+            }
+          ],
+          "secondaryPeaks": [
+            {
+              "id": "c-o-stretch-ester",
+              "mode": "C-O Stretching (ester)",
+              "wavenumber": [1210, 1163],
+              "intensity": "strong",
+              "required": true,
+              "note": "Characteristic strong C-O stretch"
+            }
+          ],
+          "confidence": 0.90,
+          "notes": "No O-H or N-H stretches. Higher C=O frequency than ketone. Strong C-O stretch is helpful."
+        },
+        {
+          "id": "c=o-amide",
+          "source": "Amide (RCONH₂, RCONHR, RCONR₂)",
+          "primaryPeak": {
+            "wavenumber": [1690, 1630],
+            "intensity": "strong",
+            "shape": "medium-broad",
+            "fwhm": [50, 80],
+            "description": "Amide C=O stretch (Amide I band), lowered due to resonance"
+          },
+          "subCases": [
+            {
+              "label": "Primary amide (RCONH₂) - free",
+              "wavenumber": [1690],
+              "notes": "Unassociated"
+            },
+            {
+              "label": "Primary amide - associated",
+              "wavenumber": [1650],
+              "notes": "Hydrogen-bonded, common"
+            },
+            {
+              "label": "Secondary amide (RCONHR) - free",
+              "wavenumber": [1680],
+              "notes": "Unassociated"
+            },
+            {
+              "label": "Secondary amide - associated",
+              "wavenumber": [1640],
+              "notes": "Hydrogen-bonded"
+            },
+            {
+              "label": "Tertiary amide (RCONR₂) - free",
+              "wavenumber": [1680],
+              "notes": "No N-H"
+            },
+            {
+              "label": "Tertiary amide - associated",
+              "wavenumber": [1630],
+              "notes": "No N-H, lower frequency"
+            }
+          ],
+          "secondaryPeaks": [
+            {
+              "id": "nh-stretch-amide",
+              "mode": "N-H Stretching",
+              "wavenumber": [3500, 3300],
+              "intensity": "medium",
+              "required": false,
+              "note": "Primary: two peaks; Secondary: one peak; Tertiary: none"
+            },
+            {
+              "id": "cn-stretch-amide",
+              "mode": "C-N Stretching (Amide II band)",
+              "wavenumber": [1550, 1500],
+              "intensity": "medium",
+              "required": false,
+              "note": "Mix of C-N stretch and N-H bend"
+            }
+          ],
+          "confidence": 0.85,
+          "notes": "C=O lowered by resonance compared to ketone/ester. N-H stretches help confirm. Broad due to H-bonding."
+        }
+      ]
+    },
+
+    "chWagging": {
+      "id": "ch-wag",
+      "name": "C-H Wagging (Out-of-plane)",
+      "category": "out-of-plane bending",
+      "description": "Vibrational mode: C-H bond swings out of the molecular plane, important for polymer structure determination",
+      
+      "subTypes": [
+        {
+          "id": "ch-wag-alkene",
+          "source": "Alkene C=C-H",
+          "primaryPeak": {
+            "wavenumber": [600, 1000],
+            "intensity": "variable to strong",
+            "shape": "sharp",
+            "description": "Out-of-plane bending of vinyl H, diagnostic for C=C substitution pattern"
+          },
+          "subCases": [
+            {
+              "label": "Monosubstituted alkene (vinyl group, CH₂=)",
+              "wavenumber": [915, 905],
+              "intensity": "strong",
+              "note": "=CH₂ group shows strong peak in this region"
+            },
+            {
+              "label": "Disubstituted alkene (trans/E)",
+              "wavenumber": [980, 960],
+              "intensity": "strong",
+              "note": "R-CH=CH-R (trans)"
+            },
+            {
+              "label": "Disubstituted alkene (cis/Z)",
+              "wavenumber": [730, 665],
+              "intensity": "strong",
+              "note": "R-CH=CH-R (cis)"
+            },
+            {
+              "label": "Trisubstituted alkene",
+              "wavenumber": [840, 790],
+              "intensity": "medium",
+              "note": "R₂C=CH-R"
+            },
+            {
+              "label": "Vinylidene (terminal C=C with two H on same C)",
+              "wavenumber": [895, 885],
+              "intensity": "strong",
+              "note": "R₂C=CH₂"
+            }
+          ],
+          "confidence": 0.95,
+          "notes": "Pattern highly diagnostic. Can determine double bond geometry (cis vs trans). Combined with C=C stretch (weak) gives full picture."
+        },
+        {
+          "id": "ch-wag-aromatic",
+          "source": "Aromatic C-H (benzene and derivatives)",
+          "primaryPeak": {
+            "wavenumber": [680, 860],
+            "intensity": "strong",
+            "shape": "sharp to medium-broad",
+            "description": "Out-of-plane C-H bending of aromatic ring, diagnostic of substitution pattern"
+          },
+          "subCases": [
+            {
+              "label": "Monosubstituted benzene (C₆H₅-)",
+              "wavenumber": [750, 700],
+              "intensity": "strong",
+              "note": "Two bands: 750±20 and 700±20"
+            },
+            {
+              "label": "1,2-Disubstituted (ortho)",
+              "wavenumber": [755, 700],
+              "intensity": "strong",
+              "note": "Two bands: 755±20 and 700±20"
+            },
+            {
+              "label": "1,3-Disubstituted (meta)",
+              "wavenumber": [880, 780, 700],
+              "intensity": "strong",
+              "note": "Three characteristic bands: 880±20, 780±20, (700±20)"
+            },
+            {
+              "label": "1,4-Disubstituted (para)",
+              "wavenumber": [810],
+              "intensity": "strong",
+              "note": "Single strong band: 810±20. Often very diagnostic."
+            },
+            {
+              "label": "1,2,3-Trisubstituted",
+              "wavenumber": [780, 700],
+              "intensity": "strong",
+              "note": "Two bands: 780±20 and (700±20)"
+            },
+            {
+              "label": "1,2,4-Trisubstituted",
+              "wavenumber": [880, 810],
+              "intensity": "strong",
+              "note": "Two bands: 880±20 and 810±20"
+            }
+          ],
+          "confidence": 0.95,
+          "notes": "Pattern in 680-860 region is highly diagnostic of aromatic substitution. Can determine position of substituents."
+        }
+      ]
+    },
+
+    "nhStretching": {
+      "id": "nh-stretch",
+      "name": "N-H Stretching",
+      "category": "stretching",
+      "description": "Vibrational mode: N-H bond elongation and compression, 3300-3500 cm⁻¹",
+      
+      "subTypes": [
+        {
+          "id": "nh-stretch-primary-amine",
+          "source": "Primary Amine (RNH₂)",
+          "primaryPeak": {
+            "wavenumber": [3500, 3400],
+            "intensity": "medium",
+            "shape": "split (two peaks)",
+            "fwhm": [40, 80],
+            "description": "Two N-H stretching bands: symmetric and asymmetric modes"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "nh-bend-primary",
+              "mode": "N-H Bending (primary amine)",
+              "wavenumber": [1650, 1580],
+              "intensity": "medium",
+              "required": true,
+              "note": "Characteristic bending band, helps confirm primary"
+            }
+          ],
+          "confidence": 0.90,
+          "notes": "TWO peaks is diagnostic for primary amine. Secondary has ONE, tertiary has NONE. Often hydrogen-bonded."
+        },
+        {
+          "id": "nh-stretch-secondary-amine",
+          "source": "Secondary Amine (R₂NH)",
+          "primaryPeak": {
+            "wavenumber": [3350, 3310],
+            "intensity": "medium",
+            "shape": "single",
+            "fwhm": [30, 60],
+            "description": "Single N-H stretch band (primary + secondary modes overlap)"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "nh-bend-secondary",
+              "mode": "N-H Bending",
+              "wavenumber": [1650, 1500],
+              "intensity": "medium",
+              "required": true,
+              "note": "Less pronounced than primary"
+            }
+          ],
+          "confidence": 0.80,
+          "notes": "ONE peak distinguishes from primary (two) and tertiary (none). Often broad."
+        },
+        {
+          "id": "nh-stretch-primary-amide",
+          "source": "Primary Amide (RCONH₂)",
+          "primaryPeak": {
+            "wavenumber": [3700, 3500],
+            "intensity": "medium",
+            "shape": "split (two peaks)",
+            "fwhm": [40, 80],
+            "description": "Two N-H stretching bands of amide"
+          },
+          "secondaryPeaks": [
+            {
+              "id": "c=o-primary-amide",
+              "mode": "C=O Stretching (primary amide)",
+              "wavenumber": [1690, 1650],
+              "intensity": "strong",
+              "required": true,
+              "note": "Lower than ketone due to resonance"
+            }
+          ],
+          "confidence": 0.90,
+          "notes": "Two N-H peaks + strong C=O at 1680-1690 = primary amide. Position higher than amine N-H."
+        }
+      ]
+    },
+
+    "fingerprint": {
+      "id": "fingerprint",
+      "name": "Fingerprint Region & Combination Bands",
+      "category": "multiple",
+      "description": "Region below 1500 cm⁻¹ containing multiple overlapping bending, stretching, and combination bands; diagnostic for polymer types and detailed structural information",
+      
+      "subTypes": [
+        {
+          "id": "polymer-pe",
+          "source": "Polyethylene (PE) and similar alkane polymers",
+          "primaryPeaks": [
+            {
+              "wavenumber": 2960,
+              "mode": "C-H stretch (CH₂, asymmetric)",
+              "intensity": "strong"
+            },
+            {
+              "wavenumber": 2850,
+              "mode": "C-H stretch (CH₂, symmetric)",
+              "intensity": "strong"
+            },
+            {
+              "wavenumber": 1465,
+              "mode": "C-H bending (CH₂ scissoring)",
+              "intensity": "medium"
+            },
+            {
+              "wavenumber": 720,
+              "mode": "C-H wagging (CH₂ rocking chain)",
+              "intensity": "variable",
+              "note": "Number of bands indicates chain conformation and crystallinity"
+            }
+          ],
+          "confidence": 0.95,
+          "notes": "Simple spectrum dominated by C-H stretches. Number of 720 cm⁻¹ bands correlates with crystallinity (orthorhombic PE has multiple)"
+        },
+        {
+          "id": "polymer-pvc",
+          "source": "Polyvinyl Chloride (PVC)",
+          "primaryPeaks": [
+            {
+              "wavenumber": 2960,
+              "mode": "C-H stretch (CH, asymmetric)",
+              "intensity": "strong"
+            },
+            {
+              "wavenumber": 2850,
+              "mode": "C-H stretch (CH₂, symmetric)",
+              "intensity": "strong"
+            },
+            {
+              "wavenumber": 1430,
+              "mode": "C-H bending",
+              "intensity": "medium"
+            },
+            {
+              "wavenumber": 1260,
+              "mode": "C-Cl stretching (strong C-Cl)",
+              "intensity": "strong"
+            },
+            {
+              "wavenumber": 960,
+              "mode": "C-H wagging (vinyl, trans-CH=CH)",
+              "intensity": "strong",
+              "note": "Diagnostic of PVC 1,2-addition"
+            }
+          ],
+          "confidence": 0.95,
+          "notes": "Strong C-Cl at 1260 + trans-C=C wag at 960 are diagnostic. Can identify degree of hydrolysis if OH present."
+        },
+        {
+          "id": "polymer-pet",
+          "source": "Polyethylene Terephthalate (PET, Polyester)",
+          "primaryPeaks": [
+            {
+              "wavenumber": 3030,
+              "mode": "Aromatic C-H stretch",
+              "intensity": "weak"
+            },
+            {
+              "wavenumber": 2960,
+              "mode": "Aliphatic C-H stretch (CH₂)",
+              "intensity": "strong"
+            },
+            {
+              "wavenumber": 1715,
+              "mode": "C=O stretch (ester)",
+              "intensity": "strong"
+            },
+            {
+              "wavenumber": 1600,
+              "mode": "Aromatic C=C",
+              "intensity": "medium"
+            },
+            {
+              "wavenumber": 1240,
+              "mode": "C-O stretch (ester)",
+              "intensity": "strong"
+            },
+            {
+              "wavenumber": 1090,
+              "mode": "C-O stretch",
+              "intensity": "strong"
+            },
+            {
+              "wavenumber": 870,
+              "mode": "Aromatic C-H out-of-plane (para-disubstituted)",
+              "intensity": "strong"
+            }
+          ],
+          "confidence": 0.95,
+          "notes": "Aromatic peaks + ester C=O + para-substitution pattern diagnostic. Crystallinity varies but doesn't change major peaks."
+        }
+      ]
+    }
+  },
+
+  "peakShapeGuide": {
+    "sharp": {
+      "description": "Narrow, well-defined peak",
+      "fwhm": [10, 50],
+      "examples": ["C-H stretch (alkane)", "C=O stretch", "aromatic C-H"],
+      "note": "Indicates strong bond with little coupling"
+    },
+    "medium": {
+      "description": "Moderately broad peak",
+      "fwhm": [50, 100],
+      "examples": ["N-H stretch", "phenol O-H"],
+      "note": "Some broadening due to hydrogen bonding or coupling"
+    },
+    "broad": {
+      "description": "Significantly broadened peak",
+      "fwhm": [100, 300],
+      "examples": ["alcohol O-H (hydrogen-bonded)", "amine N-H"],
+      "note": "Hydrogen bonding causes broadening"
+    },
+    "very-broad": {
+      "description": "Extremely broad envelope",
+      "fwhm": [300, 1200],
+      "examples": ["carboxylic acid O-H", "water in minerals"],
+      "note": "Characteristic of strong hydrogen bonding network"
+    },
+    "split": {
+      "description": "Two or more distinct peaks",
+      "subpeaks": "2+",
+      "examples": ["primary amine N-H (two bands)", "aldehyde C-H (doublet)"],
+      "note": "Indicates degeneracy of mode or Fermi resonance"
+    },
+    "doublet": {
+      "description": "Two closely spaced peaks",
+      "separation": [20, 100],
+      "examples": ["aldehyde C-H stretch"],
+      "note": "Often due to Fermi resonance with overtone"
+    },
+    "medium-broad": {
+      "description": "Between 'medium' and 'broad'",
+      "fwhm": [80, 150],
+      "examples": ["some amide C=O"],
+      "note": "Partial hydrogen bonding"
+    }
+  },
+
+  "crossValidationRules": [
+    {
+      "title": "Alcohol O-H Confirmation",
+      "rule": "If O-H stretch detected @ [3200-3600] sharp/medium-broad, must validate with: (1) O-H bend @ [1420-1330] AND (2) C-O stretch @ [1000-1300]. If any missing → likely NOT alcohol",
+      "excludes": ["carboxylic-acid", "phenol"],
+      "confidence_increase": "+15% with all three peaks"
+    },
+    {
+      "title": "Carboxylic Acid Confirmation",
+      "rule": "If O-H stretch detected @ [2500-3300] VERY-BROAD, MUST have C=O @ [1680-1720] strong. FWHM of O-H > 300 is diagnostic. If no C=O → likely water or amine",
+      "confidence_increase": "+20% with C=O present"
+    },
+    {
+      "title": "Phenol vs Alcohol Distinction",
+      "rule": "If O-H @ [3300-3500] sharp/medium-broad, check for aromatic C=C @ [1400-1600] (multiple peaks). If aromatic pattern present → PHENOL. If aliphatic only → ALCOHOL",
+      "confidence_increase": "+15% with aromatic confirmation"
+    },
+    {
+      "title": "Aldehyde Identification",
+      "rule": "Aldehyde C-H doublet @ [2830-2695] is HIGHLY diagnostic. If present, must also have C=O @ [1740-1720]. If only doublet but no C=O → false alarm",
+      "confidence_increase": "+25% with C=O validation"
+    },
+    {
+      "title": "Unsaturation Detection",
+      "rule": "If C-H stretch above 3000 cm⁻¹ present (alkene or aromatic), must have corresponding C=C stretch @ [1600-1680] (weak) and out-of-plane C-H bending @ [600-1000]",
+      "confidence_increase": "+20% with C=C and bending present"
+    },
+    {
+      "title": "Primary Amine Confirmation",
+      "rule": "If two N-H stretches @ [3500-3400] (split), must validate with N-H bend @ [1650-1580]. If only one N-H stretch → SECONDARY amine. If none → TERTIARY",
+      "confidence_increase": "+20% with N-H bend validation"
+    },
+    {
+      "title": "Ester vs Ketone vs Carboxylic Acid",
+      "rule": "All have C=O, but positions differ: Ester [1750-1735], Ketone [1725-1705], Carboxylic acid [1720-1680]. Use: (1) C=O position, (2) O-H stretch (broad for acid), (3) C-O strong stretch for ester",
+      "confidence_increase": "+15% with secondary peaks"
+    },
+    {
+      "title": "Alkene Geometry Determination",
+      "rule": "Monosubstituted (=CH₂) shows strong C-H wag @ [915-905]. Trans-disubstituted shows @ [980-960]. Cis-disubstituted shows @ [730-665]. Pattern is diagnostic",
+      "confidence": "very-high (95%)"
+    },
+    {
+      "title": "Aromatic Substitution Pattern",
+      "rule": "Out-of-plane C-H bending @ [680-860] is diagnostic: Mono [750±20, 700±20], ortho [755±20, 700±20], meta [880±20, 780±20, 700], para [810±20], tri+ patterns specific",
+      "confidence": "very-high (95%)"
+    }
+  ],
+
+  "interpretationHints": {
+    "startingPoints": [
+      "Always look for O-H or N-H stretches first (3000-3700 cm⁻¹). These indicate major functional groups.",
+      "Check for C=O (1630-1800 cm⁻¹). Position of C=O tells you what type (aldehyde, ketone, ester, amide, acid).",
+      "Look at C-H region (2800-3100 cm⁻¹). Position above/below 3000 indicates saturation/unsaturation.",
+      "Examine fingerprint region (600-1500 cm⁻¹) for specific structural features (aromatic, polymer type, etc.)"
+    ],
+    "redFlags": [
+      "Very broad O-H @ [2500-3300] FWHM > 300 without C=O → likely water, not carboxylic acid",
+      "C-H stretch above 3000 WITHOUT corresponding C=C stretch or aromatic rings → possible overtone or artifact",
+      "C=O but no secondary peaks → may be impure sample or artifact",
+      "Aldehyde C-H doublet without C=O → likely false identification"
+    ],
+    "commonMistakes": [
+      "Confusing alcohol O-H with phenol O-H → check aromatic character",
+      "Missing weak C=C stretch due to low intensity → always check 1600-1680",
+      "Thinking all broad peaks are O-H → could be N-H or water-related",
+      "Assuming single peak identification is sufficient → always use cross-validation"
+    ]
+  }
+}

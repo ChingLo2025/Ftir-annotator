@@ -1,0 +1,143 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ==================== Header ==================== */
+.app-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.app-header h1 {
+  font-size: 2em;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.app-header p {
+  font-size: 0.95em;
+  opacity: 0.95;
+  font-weight: 300;
+}
+
+/* ==================== Main Content ==================== */
+.app-main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 30px 20px;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.uploader-section {
+  /* Uploader at top */
+}
+
+/* ==================== Parameters Row (2 columns) ==================== */
+.parameters-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 900px) {
+  .parameters-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.parameter-section {
+  /* Already styled in component CSS */
+}
+
+/* ==================== Chart Section ==================== */
+.chart-section {
+  /* Full width spectrum chart */
+}
+
+/* ==================== Results Section ==================== */
+.results-section {
+  /* Peak table and ambiguity panel */
+}
+
+/* ==================== Export Section ==================== */
+.export-section {
+  /* Export buttons and CSV/PNG downloads */
+}
+
+/* ==================== Status Section ==================== */
+.status-section {
+  margin-bottom: 20px;
+}
+
+/* ==================== Footer ==================== */
+.app-footer {
+  background: #2c3e50;
+  color: #ecf0f1;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9em;
+  border-top: 1px solid #34495e;
+}
+
+.app-footer a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.app-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 25px 15px;
+  }
+
+  .app-header h1 {
+    font-size: 1.5em;
+  }
+
+  .app-main {
+    padding: 20px 15px;
+  }
+
+  .section {
+    margin-bottom: 20px;
+  }
+
+  .parameters-row {
+    gap: 20px;
+  }
+}
