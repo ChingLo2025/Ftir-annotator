@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/ftir-annotator/',
+  base: '/Ftir-annotator/',
   plugins: [react()],
   resolve: {
     alias: {
