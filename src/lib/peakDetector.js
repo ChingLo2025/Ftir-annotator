@@ -4,13 +4,11 @@
  * Pure JavaScript implementation of peak detection algorithm
  * Ported from ftir_peak_detector.py
  * 
- * Dependencies: numjs (for scientific computing)
+ * Pure JavaScript implementation - no external dependencies
  * 
  * Author: WALL·E
  * Date: 2026-02-19
  */
-
-import * as nj from 'numjs'
 
 /**
  * Convert transmittance (%) to absorbance
