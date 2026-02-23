@@ -187,7 +187,7 @@ export const useAppStore = create((set, get) => ({
     const state = get()
     const { spectrum, peakDetectionParams } = state
 
-    if (!spectrum || !spectrum.wavenumber || !spectrum.absorbance) {
+    if (!spectrum || !spectrum.wavenumber || (!spectrum.transmittance && !spectrum.absorbance)) {
       set(state => ({
         ui: {
           ...state.ui,
@@ -209,7 +209,7 @@ export const useAppStore = create((set, get) => ({
       // For now, assume spectrum contains wavenumber and transmittance
       const detectedPeaks = performPeakDetection(
         spectrum.wavenumber,
-        spectrum.transmittance || spectrum.absorbance, // Support both
+        spectrum.transmittance, // Always run detection from transmittance
         {
           minHeight: peakDetectionParams.peakHeightThreshold || 0.01,
           smoothWindowLength: peakDetectionParams.smoothingWindow || 7,

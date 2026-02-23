@@ -33,7 +33,7 @@ export default function PeakDetectionParameter() {
   }
 
   const handleDetectPeaks = () => {
-    if (spectrum && spectrum.wavenumber && spectrum.absorbance) {
+    if (spectrum && spectrum.wavenumber && (spectrum.transmittance || spectrum.absorbance)) {
       detectPeaks()
     }
   }
