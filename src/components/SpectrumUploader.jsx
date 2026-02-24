@@ -51,11 +51,13 @@ function SpectrumUploader() {
         fileSize: (file.size / 1024).toFixed(2),
         dataPoints: parsedSpectrum.dataPoints,
         wavenumberRange: parsedSpectrum.wavenumberRange,
-        transmittanceRange: parsedSpectrum.transmittanceRange
+        transmittanceRange: parsedSpectrum.transmittanceRange,
+        yAxisUnit: parsedSpectrum.yAxisUnit
       })
 
       // Success status
-      setUIStatus('success', `✓ 成功載入 ${parsedSpectrum.dataPoints} 個數據點`)
+      const unitText = parsedSpectrum.yAxisUnit === 'transmittance' ? 'Transmittance' : 'Absorbance'
+      setUIStatus('success', `✓ 成功載入 ${parsedSpectrum.dataPoints} 個數據點（偵測 Y 軸: ${unitText}）`)
 
       console.log('Spectrum loaded:', parsedSpectrum)
     } catch (err) {
@@ -209,6 +211,14 @@ function SpectrumUploader() {
                 <span className="detail-label">💧 傳輸率</span>
                 <span className="detail-value">
                   {preview?.transmittanceRange[0]?.toFixed(1)} - {preview?.transmittanceRange[1]?.toFixed(1)}%
+                </span>
+              </div>
+
+              {/* Detected Y Unit */}
+              <div className="detail-row">
+                <span className="detail-label">🧭 偵測單位</span>
+                <span className="detail-value">
+                  {preview?.yAxisUnit === 'absorbance' ? 'Absorbance（已轉換供顯示）' : 'Transmittance'}
                 </span>
               </div>
             </div>

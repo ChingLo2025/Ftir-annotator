@@ -9,12 +9,83 @@
  */
 
 /**
+ * Convert transmittance (%) to absorbance
+ * A = log10(100 / %T)
+ *
+ * @param {number[]} transmittance
+ * @returns {number[]}
+ */
+export function transmittanceToAbsorbance(transmittance) {
+  return transmittance.map(t => {
+    const clipped = Math.max(0.1, Math.min(t, 100))
+    return Math.log10(100 / clipped)
+  })
+}
+
+/**
+ * Convert absorbance to transmittance (%)
+ * %T = 100 / (10 ^ A)
+ *
+ * @param {number[]} absorbance
+ * @returns {number[]}
+ */
+export function absorbanceToTransmittance(absorbance) {
+  return absorbance.map(a => {
+    const t = 100 / Math.pow(10, a)
+    return Math.max(0, Math.min(t, 100))
+  })
+}
+
+/**
+ * Infer Y-axis unit from FTIR intensity values.
+ *
+ * Heuristic:
+ * - Most FTIR transmittance data is in 0-100 range and often has values > 10.
+ * - Absorbance is usually small (commonly < 5).
+ *
+ * @param {number[]} yValues
+ * @returns {'transmittance'|'absorbance'}
+ */
+export function inferYAxisUnit(yValues, headerLine = '') {
+  const valid = yValues.filter(v => Number.isFinite(v))
+  if (valid.length === 0) {
+    throw new Error('無法判斷 Y 軸單位：資料為空')
+  }
+
+  const header = headerLine.toLowerCase()
+  if (header.includes('absorbance') || header.includes('abs')) {
+    return 'absorbance'
+  }
+  if (header.includes('trans') || header.includes('%t')) {
+    return 'transmittance'
+  }
+
+  const maxY = Math.max(...valid)
+  const minY = Math.min(...valid)
+  const over100Ratio = valid.filter(v => v > 100).length / valid.length
+
+  // If data has large/consistent >100 values, it's likely not transmittance.
+  // But allow a small fraction >100 (common baseline artifacts in FTIR transmittance).
+  if (minY >= 0 && maxY <= 130 && over100Ratio <= 0.2) {
+    return 'transmittance'
+  }
+
+  // Typical absorbance tends to stay in small numeric ranges.
+  if (minY >= -1 && maxY <= 5) {
+    return 'absorbance'
+  }
+
+  // Default to transmittance to avoid false negatives from imperfect baseline correction.
+  return 'transmittance'
+}
+
+/**
  * Parse CSV text into structured data
  * Expects format: wavenumber, transmittance (with or without header)
  * 
  * @param {string} csvText - Raw CSV text
  * @param {object} options - Parsing options
- * @returns {object} Parsed spectrum {wavenumber, transmittance}
+ * @returns {object} Parsed spectrum with transmittance and absorbance
  * @throws {Error} If CSV is invalid
  */
 export function parseCSVText(csvText, options = {}) {
@@ -36,13 +107,14 @@ export function parseCSVText(csvText, options = {}) {
 
   // Skip header if present
   let dataLines = lines
-  if (hasHeader && isHeaderLine(lines[0])) {
+  const detectedHeader = hasHeader && isHeaderLine(lines[0]) ? lines[0] : ''
+  if (detectedHeader) {
     dataLines = lines.slice(1)
   }
 
   // Parse data
   const wavenumber = []
-  const transmittance = []
+  const yValues = []
   const errors = []
 
   for (let i = 0; i < dataLines.length; i++) {
@@ -63,9 +135,9 @@ export function parseCSVText(csvText, options = {}) {
       }
 
       const wn = parseFloat(parts[0])
-      const tm = parseFloat(parts[1])
+      const y = parseFloat(parts[1])
 
-      if (isNaN(wn) || isNaN(tm)) {
+      if (isNaN(wn) || isNaN(y)) {
         throw new Error(`第 ${i + 1} 行: 無法解析為數字`)
       }
 
@@ -74,12 +146,8 @@ export function parseCSVText(csvText, options = {}) {
         throw new Error(`第 ${i + 1} 行: 波數超出範圍 (100-5000)`)
       }
 
-      if (tm < 0 || tm > 100) {
-        throw new Error(`第 ${i + 1} 行: 傳輸率超出範圍 (0-100)`)
-      }
-
       wavenumber.push(wn)
-      transmittance.push(tm)
+      yValues.push(y)
 
     } catch (error) {
       errors.push(error.message)
@@ -97,15 +165,33 @@ export function parseCSVText(csvText, options = {}) {
     console.warn(`警告: 跳過了 ${errors.length} 行無效數據`)
   }
 
-  // Validate data consistency
-  validateSpectrum(wavenumber, transmittance)
+  // Validate basic data consistency
+  validateSpectrum(wavenumber, yValues)
+
+  // Infer unit and normalize to dual representation
+  const yAxisUnit = inferYAxisUnit(yValues, detectedHeader)
+
+  let transmittance
+  let absorbance
+
+  if (yAxisUnit === 'transmittance') {
+    // Allow >100 transmittance caused by imperfect baseline correction; clamp only when converting.
+    transmittance = [...yValues]
+    absorbance = transmittanceToAbsorbance(transmittance)
+  } else {
+    absorbance = [...yValues]
+    transmittance = absorbanceToTransmittance(absorbance)
+  }
 
   return {
     wavenumber,
     transmittance,
+    absorbance,
+    yAxisUnit,
     dataPoints: wavenumber.length,
     wavenumberRange: [Math.min(...wavenumber), Math.max(...wavenumber)],
-    transmittanceRange: [Math.min(...transmittance), Math.max(...transmittance)]
+    transmittanceRange: [Math.min(...transmittance), Math.max(...transmittance)],
+    absorbanceRange: [Math.min(...absorbance), Math.max(...absorbance)]
   }
 }
 
@@ -229,7 +315,8 @@ export function formatSpectrumInfo(spectrum) {
 export function cleanSpectrum(spectrum) {
   const pairs = spectrum.wavenumber.map((wn, i) => ({
     wavenumber: wn,
-    transmittance: spectrum.transmittance[i]
+    transmittance: spectrum.transmittance[i],
+    absorbance: spectrum.absorbance?.[i]
   }))
 
   // Sort by wavenumber (ascending)
@@ -249,11 +336,20 @@ export function cleanSpectrum(spectrum) {
   return {
     wavenumber: cleaned.map(p => p.wavenumber),
     transmittance: cleaned.map(p => p.transmittance),
+    absorbance: cleaned.map(p => {
+      if (typeof p.absorbance === 'number') return p.absorbance
+      return transmittanceToAbsorbance([p.transmittance])[0]
+    }),
+    yAxisUnit: spectrum.yAxisUnit || 'transmittance',
     dataPoints: cleaned.length,
     wavenumberRange: [cleaned[0].wavenumber, cleaned[cleaned.length - 1].wavenumber],
     transmittanceRange: [
       Math.min(...cleaned.map(p => p.transmittance)),
       Math.max(...cleaned.map(p => p.transmittance))
+    ],
+    absorbanceRange: [
+      Math.min(...cleaned.map(p => (typeof p.absorbance === 'number' ? p.absorbance : transmittanceToAbsorbance([p.transmittance])[0]))),
+      Math.max(...cleaned.map(p => (typeof p.absorbance === 'number' ? p.absorbance : transmittanceToAbsorbance([p.transmittance])[0])))
     ]
   }
 }
@@ -354,6 +450,9 @@ export const csvParserFunctions = {
   parseCSVFile,
   formatSpectrumInfo,
   cleanSpectrum,
+  inferYAxisUnit,
+  transmittanceToAbsorbance,
+  absorbanceToTransmittance,
   exportAsJSON,
   exportPeaksAsCSV,
   exportAnnotationsAsCSV

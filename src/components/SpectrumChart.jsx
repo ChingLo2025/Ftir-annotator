@@ -29,7 +29,7 @@ export default function SpectrumChart() {
     if (!spectrum || !spectrum.wavenumber) return
 
     const wn = spectrum.wavenumber
-    const tm = spectrum.transmittance || spectrum.absorbance
+    const tm = spectrum.transmittance
 
     // --- Traces ---
     const traces = []
@@ -97,7 +97,7 @@ export default function SpectrumChart() {
         zeroline: false
       },
       yaxis: {
-        title: spectrum.transmittance ? 'Transmittance (%)' : 'Absorbance',
+        title: 'Transmittance (%)',
         gridcolor: '#f0f0f0',
         zeroline: false
       },
