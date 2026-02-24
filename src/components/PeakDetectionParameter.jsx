@@ -3,7 +3,7 @@
  * 
  * Peak detection parameter sliders
  * - Smoothing Window (3-21, default 7)
- * - Peak Height Threshold (0.005-0.05, default 0.01)
+ * - Peak Height Threshold (0.00005-0.005, default 0.001)
  */
 
 import React from 'react'
@@ -76,14 +76,14 @@ export default function PeakDetectionParameter() {
         <div className="slider-item">
           <div className="slider-label">
             <label>Peak Height Threshold</label>
-            <span className="slider-value">{(params.peakHeightThreshold || 0.01).toFixed(4)}</span>
+            <span className="slider-value">{(params.peakHeightThreshold || 0.001).toFixed(5)}</span>
           </div>
           <input
             type="range"
-            min="0.005"
-            max="0.05"
-            step="0.005"
-            value={params.peakHeightThreshold || 0.01}
+            min="0.00005"
+            max="0.005"
+            step="0.00005"
+            value={params.peakHeightThreshold || 0.001}
             onChange={handleHeightChange}
             className="slider"
           />

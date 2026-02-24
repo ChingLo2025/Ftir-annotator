@@ -141,7 +141,7 @@ export const useAppStore = create((set, get) => ({
   // ==================== Peak Detection Parameters ====================
   peakDetectionParams: {
     smoothingWindow: 7,        // Default 7 (3-21, odd)
-    peakHeightThreshold: 0.01, // Default 0.01 (0.005-0.05)
+    peakHeightThreshold: 0.001, // Default 0.001 (0.00005-0.005)
   },
 
   updatePeakDetectionParams: (params) => set({
@@ -154,7 +154,7 @@ export const useAppStore = create((set, get) => ({
   resetPeakDetectionParams: () => set({
     peakDetectionParams: {
       smoothingWindow: 7,
-      peakHeightThreshold: 0.01,
+      peakHeightThreshold: 0.001,
     }
   }),
 
@@ -211,7 +211,7 @@ export const useAppStore = create((set, get) => ({
         spectrum.wavenumber,
         spectrum.transmittance, // Always run detection from transmittance
         {
-          minHeight: peakDetectionParams.peakHeightThreshold || 0.01,
+          minHeight: peakDetectionParams.peakHeightThreshold || 0.001,
           smoothWindowLength: peakDetectionParams.smoothingWindow || 7,
           prominencePercent: 5, // Auto 5%
           distancePercent: 2
