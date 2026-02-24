@@ -1,29 +1,5 @@
 # FTIR Annotator - 項目檢查清單
 
-## ✅ 已完成
-
-- [x] Vite React 項目創建
-- [x] 依賴安裝（基礎）
-- [x] 額外套件安裝中...
-- [x] vite.config.js 配置 (base + alias)
-- [x] package.json 配置 (deploy script)
-- [x] 項目結構創建
-- [x] 核心模塊複製
-  - [x] peakDetector.js
-  - [x] ruleMatcher.js
-  - [x] csvParser.js
-  - [x] appStore.js
-  - [x] ftir-rules-database.json
-- [x] 文檔編寫
-  - [x] QUICK_START.md
-  - [x] PROJECT_CHECKLIST.md
-
-## 🚀 立即可做
-
-- [ ] `npm run dev` - 啟動開發伺服器
-- [ ] 測試模塊載入
-- [ ] 修改 App.jsx 開始開發元件
-
 ## 📝 Phase 1: React 元件開發 (4 週)
 
 ### Week 1: 基礎 UI (3-5 天)
@@ -182,13 +158,5 @@ Week 4: ░░░░░░░░░░░░░░░░░░░  0%
 總進度: ████░░░░░░░░░░░░░░░░  20%
 ```
 
-## 🔗 相關檔案
-
-- QUICK_START.md - 快速開始
-- IMPLEMENTATION_GUIDE.md - 完整集成指南
-- FRONTEND_SETUP.md - Vite 設置
-- PROFESSIONAL_WORKFLOW.md - 專業工作流程
-
----
 
 **準備開始？** `npm run dev` 🚀
