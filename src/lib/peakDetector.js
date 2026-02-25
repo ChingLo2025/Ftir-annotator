@@ -151,6 +151,7 @@ export function findPeaks(data, height = 0.01, prominence = null, distance = nul
 
   const peaks = []
   const peakHeights = []
+  const peakProminences = []
 
   // Find local maxima
   for (let i = 1; i < data.length - 1; i++) {
@@ -176,32 +177,56 @@ export function findPeaks(data, height = 0.01, prominence = null, distance = nul
         if (peakProminence >= prominence) {
           peaks.push(i)
           peakHeights.push(data[i])
+          peakProminences.push(peakProminence)
         }
       }
     }
   }
 
-  // Apply distance criterion (remove peaks closer than 'distance')
+  // Apply distance criterion, prioritizing higher peaks first
+  const candidates = peaks
+    .map((peak, i) => ({
+      peak,
+      height: peakHeights[i],
+      prominence: peakProminences[i]
+    }))
+    .sort((a, b) => b.height - a.height)
+
   const filtered = []
   const filteredHeights = []
+  const filteredProminences = []
 
-  for (let i = 0; i < peaks.length; i++) {
+  for (const candidate of candidates) {
     let keep = true
     for (const p of filtered) {
-      if (Math.abs(peaks[i] - p) < distance) {
+      if (Math.abs(candidate.peak - p) < distance) {
         keep = false
         break
       }
     }
     if (keep) {
-      filtered.push(peaks[i])
-      filteredHeights.push(peakHeights[i])
+      filtered.push(candidate.peak)
+      filteredHeights.push(candidate.height)
+      filteredProminences.push(candidate.prominence)
     }
   }
 
+  // Return filtered peaks in scan order
+  const ordered = filtered
+    .map((peak, i) => ({
+      peak,
+      height: filteredHeights[i],
+      prominence: filteredProminences[i]
+    }))
+    .sort((a, b) => a.peak - b.peak)
+
+  const orderedPeaks = ordered.map(item => item.peak)
+  const orderedHeights = ordered.map(item => item.height)
+  const orderedProminences = ordered.map(item => item.prominence)
+
   // Calculate peak widths (simplified FWHM)
   const widths = []
-  for (const peakIdx of filtered) {
+  for (const peakIdx of orderedPeaks) {
     const peakHeight = data[peakIdx]
     const halfHeight = peakHeight / 2
 
@@ -227,13 +252,31 @@ export function findPeaks(data, height = 0.01, prominence = null, distance = nul
   }
 
   return {
-    peaks: filtered,
+    peaks: orderedPeaks,
     properties: {
-      peak_heights: filteredHeights,
+      peak_heights: orderedHeights,
       width: widths,
-      prominences: filtered.map(() => prominence) // Simplified
+      prominences: orderedProminences
     }
   }
+}
+
+/**
+ * Estimate noise level in a signal using robust MAD of first differences.
+ */
+function estimateNoiseLevel(data) {
+  if (data.length < 3) return 0
+
+  const diffs = []
+  for (let i = 1; i < data.length; i++) {
+    diffs.push(Math.abs(data[i] - data[i - 1]))
+  }
+
+  const sorted = [...diffs].sort((a, b) => a - b)
+  const median = sorted[Math.floor(sorted.length / 2)] || 0
+
+  // Convert MAD of differences to rough noise sigma
+  return median / 0.6745
 }
 
 /**
@@ -316,8 +359,14 @@ export function detectPeaks(wavenumber, transmittance, options = {}) {
   // Auto-calculate parameters
   const maxAbs = Math.max(...absorbance)
   const height = Math.max(minHeight, maxAbs * 0.01)
-  const prominence = maxAbs * (prominencePercent / 100)
-  const distance = Math.max(1, Math.floor(wn.length * (distancePercent / 100)))
+  const requestedProminence = maxAbs * (prominencePercent / 100)
+  const noiseLevel = estimateNoiseLevel(absorbance)
+  const adaptiveProminence = Math.max(height * 0.6, noiseLevel * 2.5)
+  const prominence = Math.min(requestedProminence, adaptiveProminence)
+
+  // Keep minimum-distance practical to avoid swallowing nearby smaller peaks.
+  const requestedDistance = Math.floor(wn.length * (distancePercent / 100))
+  const distance = Math.max(1, Math.min(requestedDistance, 25))
 
   // Detect peaks
   const result = findPeaks(absorbance, height, prominence, distance)
